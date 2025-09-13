@@ -108,6 +108,7 @@ namespace RedBlackTreeVisualizer
         {
 
             Root = RemoveRec(value, Root);
+            Root.IsBlack = true;
 
         }
         private Node<T> RemoveRec(T value, Node<T> node)

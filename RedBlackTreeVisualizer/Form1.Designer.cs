@@ -67,6 +67,7 @@
             removeButton.TabIndex = 5;
             removeButton.Text = "Remove";
             removeButton.UseVisualStyleBackColor = true;
+            removeButton.Click += removeButton_Click;
             // 
             // treePanel
             // 

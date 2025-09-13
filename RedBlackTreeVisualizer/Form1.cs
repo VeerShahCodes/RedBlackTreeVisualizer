@@ -50,6 +50,8 @@ namespace RedBlackTreeVisualizer
                     MessageBox.Show(ex.Message);
                 }
             }
+            layout.DrawTree();
+
             removeTextBox.Text = "";
         }
     }
