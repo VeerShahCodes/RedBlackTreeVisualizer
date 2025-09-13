@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,10 @@ namespace RedBlackTreeVisualizer
     {
         RedBlackTree<T> tree;
         Panel visualizerPanel;
-
-        public TreeLayout(RedBlackTree<T> tree, Panel visualizerPanel)
+        Graphics gfx;
+        public TreeLayout(RedBlackTree<T> tree, Panel visualizerPanel, Graphics gfx)
         {
+            this.gfx = gfx;
             this.tree = tree;
             this.visualizerPanel = visualizerPanel;
         }
@@ -21,94 +23,49 @@ namespace RedBlackTreeVisualizer
         {
             visualizerPanel.Controls.Clear();
 
-   
+
             if (tree.Root == null) return;
-            Stack<(Node<T>, int, int, int)> stack = new Stack<(Node<T>, int, int, int)>();
-            int startX = visualizerPanel.Width / 2;
-            int startY = 40;
-            int horizontalSpacing = 200;
-            int verticalSpacing = 60;
-            stack.Push((tree.Root, startX, startY, horizontalSpacing));
-            while (stack.Count > 0)
-            {
-                var (currentNode, x, y, hSpacing) = stack.Pop();
-                Label node = new Label();
-                node.Text = currentNode.Value.ToString();
-                node.Size = new Size(30, 30);
-                node.TextAlign = ContentAlignment.MiddleCenter;
-                node.Location = new Point(x - node.Width / 2, y - node.Height / 2);
-                node.Parent = visualizerPanel;
-                if (currentNode.IsBlack) node.BackColor = Color.Black;
-                else node.BackColor = Color.Red;
-                node.ForeColor = Color.White;
-                if (currentNode.RightChild != null)
-                {
-                    int childX = x + hSpacing;
-                    int childY = y + verticalSpacing;
-                    stack.Push((currentNode.RightChild, childX, childY, hSpacing / 2));
-                    using (Graphics g = visualizerPanel.CreateGraphics())
-                    {
-                        g.DrawLine(Pens.Black, x, y, childX, childY);
-                    }
-                }
-                if (currentNode.LeftChild != null)
-                {
-                    int childX = x - hSpacing;
-                    int childY = y + verticalSpacing;
-                    stack.Push((currentNode.LeftChild, childX, childY, hSpacing / 2));
-                    using (Graphics g = visualizerPanel.CreateGraphics())
-                    {
-                        g.DrawLine(Pens.Black, x, y, childX, childY);
-                    }
-                }
 
-            }
+            gfx.Clear(visualizerPanel.BackColor);
+
+            DrawTreeRec(tree.Root, visualizerPanel.Width / 2, 40, 20, 20, 0);
         }
-        public void DrawTreex()
+
+        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth)
         {
+            if(node == null) return;
 
-            if (tree.Root != null)
+            Label label = new Label();
+            label.Text = node.Value.ToString();
+            label.AutoSize = true;
+
+            if (node.IsBlack) label.BackColor = Color.Black;
+
+            else label.BackColor = Color.Red;
+
+            label.ForeColor = Color.White;
+            label.Size = new Size(width, height);
+            label.Location = new Point(x - label.Width / 2, y);
+
+            Pen pen = new Pen(Color.Black, 2);
+
+            visualizerPanel.Controls.Add(label);
+
+            DrawTreeRec(node.LeftChild, x - width * 2 + depth * 10, y + height * 2, width, height, depth + 1);
+
+            if (node.LeftChild != null)
             {
-                int startX = visualizerPanel.Width / 2;
-                int startY = 40;
-                int horizontalSpacing = 200; 
-                int verticalSpacing = 60; 
-                DrawNode(tree.Root, startX, startY, horizontalSpacing, verticalSpacing);
+                gfx.DrawLine(pen, label.Location.X, label.Location.Y + label.Size.Height, x - width * 2 + depth * 10, y + height * 2);
             }
+
+            DrawTreeRec(node.RightChild, x + width * 2 - depth * 10, y + height * 2, width, height, depth + 1);
+
+            if (node.RightChild != null)
+            {
+                gfx.DrawLine(pen, label.Location.X + label.Size.Width, label.Location.Y + label.Size.Height, x + width * 2 - depth * 10 - width / 2, y + height * 2);
+            }
+
         }
 
-        private void DrawNode(Node<T> currentNode, int startX, int startY, int horizontalSpacing, int verticalSpacing)
-        {
-            Label node = new Label();
-            node.Text = currentNode.Value.ToString();
-            node.Size = new Size(30, 30);
-            node.TextAlign = ContentAlignment.MiddleCenter;
-            node.Location = new Point(startX - node.Width / 2, startY - node.Height / 2);
-            node.Parent = visualizerPanel;
-            if(currentNode.IsBlack) node.BackColor = Color.Black;
-            else node.BackColor = Color.Red;
-            node.ForeColor = Color.White;
-
-            if(currentNode.LeftChild != null)
-            {
-                int childX = startX - horizontalSpacing;
-                int childY = startY + verticalSpacing;
-                DrawNode(currentNode.LeftChild, childX, childY, horizontalSpacing / 2, verticalSpacing);
-                using (Graphics g = visualizerPanel.CreateGraphics())
-                {
-                    g.DrawLine(Pens.Black, startX, startY, childX, childY);
-                }
-            }
-            if(currentNode.RightChild != null)
-            {
-                int childX = startX + horizontalSpacing;
-                int childY = startY + verticalSpacing;
-                DrawNode(currentNode.RightChild, childX, childY, horizontalSpacing / 2, verticalSpacing);
-                using (Graphics g = visualizerPanel.CreateGraphics())
-                {
-                    g.DrawLine(Pens.Black, startX, startY, childX, childY);
-                }
-            }
-        }
     }
 }

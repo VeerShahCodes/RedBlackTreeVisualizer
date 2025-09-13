@@ -13,7 +13,7 @@ namespace RedBlackTreeVisualizer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            layout = new TreeLayout<int>(rbt, treePanel);
+            layout = new TreeLayout<int>(rbt, treePanel, treePanel.CreateGraphics());
 
         }
 
