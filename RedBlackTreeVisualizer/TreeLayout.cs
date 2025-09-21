@@ -19,7 +19,7 @@ namespace RedBlackTreeVisualizer
             this.visualizerPanel = visualizerPanel;
         }
 
-        public void DrawTree()
+        public void DrawTree(Node<T> newNode)
         {
             visualizerPanel.Controls.Clear();
 
@@ -27,13 +27,33 @@ namespace RedBlackTreeVisualizer
             if (tree.Root == null) return;
 
             gfx.Clear(visualizerPanel.BackColor);
+            int depth = FindDepth(tree.Root);
+            
+        
+            int ySpacing = visualizerPanel.Height / depth;
+            int xSpacing = visualizerPanel.Width / depth;
 
-            DrawTreeRec(tree.Root, visualizerPanel.Width / 2, 40, 20, 20, 0);
+            DrawTreeRec(tree.Root, visualizerPanel.Width / 2, 40, 20, 20, depth, newNode);
+        }
+        private int FindDepth(Node<T> node)
+        {
+            if (node == null) 
+            {
+                return 0;
+            }
+            
+            return 1 + Math.Max(FindDepth(node.LeftChild), FindDepth(node.RightChild));
         }
 
-        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth)
+        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth, Node<T> newNode)
         {
             if(node == null) return;
+
+            bool isNew = false;
+            if(newNode != null && node.Value.CompareTo(newNode.Value) == 0)
+            {
+                isNew = true;
+            }
 
             Label label = new Label();
             label.Text = node.Value.ToString();
@@ -43,7 +63,15 @@ namespace RedBlackTreeVisualizer
 
             else label.BackColor = Color.Red;
 
-            label.ForeColor = Color.White;
+            if(isNew)
+            {
+                label.ForeColor = Color.Yellow;
+            }
+            else
+            {
+                label.ForeColor = Color.White;
+            }
+                
             label.Size = new Size(width, height);
             label.Location = new Point(x - label.Width / 2, y);
 
@@ -51,14 +79,14 @@ namespace RedBlackTreeVisualizer
 
             visualizerPanel.Controls.Add(label);
 
-            DrawTreeRec(node.LeftChild, x - width * 2 + depth * 10, y + height * 2, width, height, depth + 1);
+            DrawTreeRec(node.LeftChild, x - visualizerPanel.Width / depth, y + visualizerPanel.Height / depth, width, height, depth, newNode);
 
             if (node.LeftChild != null)
             {
                 gfx.DrawLine(pen, label.Location.X, label.Location.Y + label.Size.Height, x - width * 2 + depth * 10, y + height * 2);
             }
 
-            DrawTreeRec(node.RightChild, x + width * 2 - depth * 10, y + height * 2, width, height, depth + 1);
+            DrawTreeRec(node.RightChild, x + visualizerPanel.Width / depth, y + visualizerPanel.Height / depth, width, height, depth, newNode);
 
             if (node.RightChild != null)
             {

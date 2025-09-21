@@ -108,7 +108,7 @@ namespace RedBlackTreeVisualizer
         {
 
             Root = RemoveRec(value, Root);
-            if (Root != null)
+            if(Root != null)
             {
                 Root.IsBlack = true;
             }
@@ -140,13 +140,10 @@ namespace RedBlackTreeVisualizer
 
 
                 if (node.LeftChild == null && node.RightChild == null)
-                {
-                    //Node<T> nodeTemp = node;
-                    node = null;
+                {      
 
 
-                    return node;
-                    //return nodeTemp;
+                    return null;
                 }
                 else
                 {

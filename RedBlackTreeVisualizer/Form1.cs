@@ -14,7 +14,7 @@ namespace RedBlackTreeVisualizer
         private void Form1_Load(object sender, EventArgs e)
         {
             layout = new TreeLayout<int>(rbt, treePanel, treePanel.CreateGraphics());
-
+            
         }
 
         private void insertButton_Click(object sender, EventArgs e)
@@ -25,13 +25,15 @@ namespace RedBlackTreeVisualizer
                 {
                     int value = int.Parse(insertTextBox.Text);
                     rbt.Insert(value);
+                    layout.DrawTree(rbt.Search(value));
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+
             }
-            layout.DrawTree();
+
 
             insertTextBox.Text = "";
         }
@@ -50,7 +52,7 @@ namespace RedBlackTreeVisualizer
                     MessageBox.Show(ex.Message);
                 }
             }
-            layout.DrawTree();
+            layout.DrawTree(null);
 
             removeTextBox.Text = "";
         }
