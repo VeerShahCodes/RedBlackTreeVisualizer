@@ -33,7 +33,14 @@ namespace RedBlackTreeVisualizer
             int ySpacing = visualizerPanel.Height / depth;
             int xSpacing = visualizerPanel.Width / depth;
 
-            DrawTreeRec(tree.Root, visualizerPanel.Width / 2, 40, 20, 20, depth, newNode);
+            int initCurrDepth = 0;
+
+            int size = 20;
+
+            int initCurrY = 0;
+            int initCurrX = visualizerPanel.Width / 2 - size / 2;
+
+            DrawTreeRec(tree.Root, initCurrX, initCurrY, size, size, depth - 1, initCurrDepth, newNode);
         }
         private int FindDepth(Node<T> node)
         {
@@ -45,7 +52,7 @@ namespace RedBlackTreeVisualizer
             return 1 + Math.Max(FindDepth(node.LeftChild), FindDepth(node.RightChild));
         }
 
-        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth, Node<T> newNode)
+        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth, int currDepth, Node<T> newNode)
         {
             if(node == null) return;
 
@@ -73,24 +80,26 @@ namespace RedBlackTreeVisualizer
             }
                 
             label.Size = new Size(width, height);
-            label.Location = new Point(x - label.Width / 2, y);
-
+            label.Location = new Point(x, y);
+            
             Pen pen = new Pen(Color.Black, 2);
 
             visualizerPanel.Controls.Add(label);
 
-            DrawTreeRec(node.LeftChild, x - visualizerPanel.Width / depth, y + visualizerPanel.Height / depth, width, height, depth, newNode);
+            if (depth == 0) return;
+
+            DrawTreeRec(node.LeftChild, x - (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) + width, y + visualizerPanel.Height / depth - height, width, height, depth, currDepth + 1, newNode);
 
             if (node.LeftChild != null)
             {
-                gfx.DrawLine(pen, label.Location.X, label.Location.Y + label.Size.Height, x - width * 2 + depth * 10, y + height * 2);
+                gfx.DrawLine(pen, label.Location.X, label.Location.Y + label.Size.Height, x - (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) + width + width / 2, y + visualizerPanel.Height / depth - height);
             }
 
-            DrawTreeRec(node.RightChild, x + visualizerPanel.Width / depth, y + visualizerPanel.Height / depth, width, height, depth, newNode);
+            DrawTreeRec(node.RightChild, x + (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) - width, y + visualizerPanel.Height / depth - height, width, height, depth, currDepth + 1, newNode);
 
             if (node.RightChild != null)
             {
-                gfx.DrawLine(pen, label.Location.X + label.Size.Width, label.Location.Y + label.Size.Height, x + width * 2 - depth * 10 - width / 2, y + height * 2);
+                gfx.DrawLine(pen, label.Location.X + label.Size.Width, label.Location.Y + label.Size.Height, x + (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) - width, y + visualizerPanel.Height / depth - height);
             }
 
         }
