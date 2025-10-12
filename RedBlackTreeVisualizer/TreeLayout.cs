@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace RedBlackTreeVisualizer
 {
-    public class TreeLayout<T> where T : IComparable<T>
+    public class TreeLayout
     {
-        RedBlackTree<T> tree;
-        Panel visualizerPanel;
+        RedBlackTree<int> tree;
+        public Panel visualizerPanel;
         Graphics gfx;
-        public Queue<AnimationStepClass> animationSteps = new Queue<AnimationStepClass>();
-        public TreeLayout(RedBlackTree<T> tree, Panel visualizerPanel, Graphics gfx)
+        public Queue<List<AnimationStepClass>> animationSteps = new Queue<List<AnimationStepClass>>();
+        public TreeLayout(RedBlackTree<int> tree, Panel visualizerPanel, Graphics gfx)
         {
             this.gfx = gfx;
             this.tree = tree;
             this.visualizerPanel = visualizerPanel;
         }
 
-        public void DrawTree(Node<T> newNode)
+        public void DrawTree(Node<int> newNode)
         {
             visualizerPanel.Controls.Clear();
 
@@ -29,8 +29,8 @@ namespace RedBlackTreeVisualizer
 
             gfx.Clear(visualizerPanel.BackColor);
             int depth = FindDepth(tree.Root);
-            
-        
+
+
             int ySpacing = visualizerPanel.Height / depth;
             int xSpacing = visualizerPanel.Width / depth;
 
@@ -43,22 +43,21 @@ namespace RedBlackTreeVisualizer
 
             DrawTreeRec(tree.Root, initCurrX, initCurrY, size, size, depth - 1, initCurrDepth, newNode);
         }
-        private int FindDepth(Node<T> node)
+        private int FindDepth(Node<int> node)
         {
-            if (node == null) 
+            if (node == null)
             {
                 return 0;
             }
-            
+
             return 1 + Math.Max(FindDepth(node.LeftChild), FindDepth(node.RightChild));
         }
 
-        public void DrawTreeRec(Node<T> node, int x, int y, int width, int height, int depth, int currDepth, Node<T> newNode)
+        public void DrawTreeRec(Node<int> node, int x, int y, int width, int height, int depth, int currDepth, Node<int> newNode)
         {
-            if(node == null) return;
-
+            if (node == null) return;
             bool isNew = false;
-            if(newNode != null && node.Value.CompareTo(newNode.Value) == 0)
+            if (newNode != null && node.Value.CompareTo(newNode.Value) == 0)
             {
                 isNew = true;
             }
@@ -71,18 +70,26 @@ namespace RedBlackTreeVisualizer
 
             else label.BackColor = Color.Red;
 
-            if(isNew)
+            if (animationSteps.Count > 0 && animationSteps.Peek()[0].Node.Value.CompareTo(node.Value) == 0 && !animationSteps.Peek()[0].isCompleted)
             {
+                label.BackColor = Color.LightBlue;
+                label.Text = "";
+            }
+
+            if (isNew)
+            {
+                animationSteps.Peek()[0].FinalPosition = new Point(x, y);
+
                 label.ForeColor = Color.Yellow;
             }
             else
             {
                 label.ForeColor = Color.White;
             }
-                
+
             label.Size = new Size(width, height);
             label.Location = new Point(x, y);
-            
+
             Pen pen = new Pen(Color.Black, 2);
 
             visualizerPanel.Controls.Add(label);
@@ -104,6 +111,7 @@ namespace RedBlackTreeVisualizer
             }
 
         }
-
     }
+
+
 }

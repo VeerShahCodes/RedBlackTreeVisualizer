@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             insertTextBox = new TextBox();
             removeTextBox = new TextBox();
             insertButton = new Button();
             removeButton = new Button();
             treePanel = new Panel();
+            timer1 = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // insertTextBox
@@ -71,11 +73,17 @@
             // 
             // treePanel
             // 
-            treePanel.BackColor = Color.Azure;
+            treePanel.BackColor = Color.LightBlue;
             treePanel.Location = new Point(238, 12);
             treePanel.Name = "treePanel";
             treePanel.Size = new Size(600, 600);
             treePanel.TabIndex = 6;
+            // 
+            // timer1
+            // 
+            timer1.Enabled = true;
+            timer1.Interval = 20;
+            timer1.Tick += timer1_Tick;
             // 
             // Form1
             // 
@@ -102,5 +110,6 @@
         private Button insertButton;
         private Button removeButton;
         private Panel treePanel;
+        private System.Windows.Forms.Timer timer1;
     }
 }

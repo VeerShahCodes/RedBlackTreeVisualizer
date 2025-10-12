@@ -13,7 +13,7 @@ namespace RedBlackTreeVisualizer
     public class RedBlackTree<T> where T : IComparable<T>
     {
         public Node<T> Root { get; private set; }
-        TreeLayout<T> layout;
+        public TreeLayout layout;
         private void FlipColor(Node<T> current)
         {
             current.IsBlack = !current.IsBlack;
@@ -23,23 +23,63 @@ namespace RedBlackTreeVisualizer
 
         public void Insert(T value)
         {
-            bool initColorRed = false;
-            Point initPos = new Point(0, 0);
-            float time = 1.0f;
-            Node<T> node;
+
             if (Root == null)
             {
                 Root = new Node<T>(true);
                 Root.Value = value;
-                node = Root;
                 return;
 
             }
+            Queue<List<AnimationStepClass>> prevSteps = new Queue<List<AnimationStepClass>>();
+
             Root = InsertRec(value, Root);
-            node = Search(value);
 
-            layout.animationSteps.Enqueue(new InsertAnimationStep<T>(initColorRed, !node.IsBlack, initPos, node, time));
+            Node<T> InsertRec(T value, Node<T> current)
+            {
+                List<AnimationStepClass> animationSteps = new List<AnimationStepClass>();
+                
+                if (current == null)
+                {
+                    current = new Node<T>(false);
+                    List<AnimationStepClass> steps = new List<AnimationStepClass>();
+                    steps.Add(new MoveAnimationStep(false, new System.Drawing.Point(0, 0), (Node<int>)(object)current, layout, layout.visualizerPanel));
+                    current.Value = value;
 
+                    return current;
+                }
+
+                if (current.Value.CompareTo(value) == 0) throw new Exception("duplicates");
+                else if (current.Value.CompareTo(value) > 0)
+                {
+                    current.LeftChild = InsertRec(value, current.LeftChild);
+                }
+                else
+                {
+                    current.RightChild = InsertRec(value, current.RightChild);
+                }
+
+                if (IsRed(current.RightChild) && !IsRed(current.LeftChild))
+                {
+                    Node<T> prev = current;
+                    current = RotateLeft(current);
+                
+                }
+                if (IsRed(current.LeftChild) && IsRed(current.LeftChild.LeftChild))
+                {
+                    current = RotateRight(current);
+                }
+                if (IsRed(current.LeftChild) && IsRed(current.RightChild))
+                {
+                    FlipColor(current);
+                }
+
+                if (prevSteps.Count > 0)
+                    prevSteps.Enqueue(animationSteps);
+
+                return current;
+
+            }
 
             Root.IsBlack = true;
             
@@ -50,43 +90,6 @@ namespace RedBlackTreeVisualizer
         private bool IsRed(Node<T> node)
         {
             return node != null && !node.IsBlack;
-        }
-        private Node<T> InsertRec(T value, Node<T> current)
-        {
-            if (current == null)
-            {
-                current = new Node<T>(false);
-
-                current.Value = value;
-                return current;
-            }
-
-            if (current.Value.CompareTo(value) == 0) throw new Exception("duplicates");
-            else if (current.Value.CompareTo(value) > 0)
-            {
-                current.LeftChild = InsertRec(value, current.LeftChild);
-            }
-            else
-            {
-                current.RightChild = InsertRec(value, current.RightChild);
-            }
-
-            if (IsRed(current.RightChild) && !IsRed(current.LeftChild))
-            {
-                current = RotateLeft(current);
-            }
-            if (IsRed(current.LeftChild) && IsRed(current.LeftChild.LeftChild))
-            {
-                current = RotateRight(current);
-            }
-            if (IsRed(current.LeftChild) && IsRed(current.RightChild))
-            {
-                FlipColor(current);
-            }
-
-
-            return current;
-
         }
 
         public Node<T> RotateLeft(Node<T> current)
