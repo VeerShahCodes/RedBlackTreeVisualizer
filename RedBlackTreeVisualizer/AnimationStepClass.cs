@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace RedBlackTreeVisualizer
 {
-    public abstract class AnimationStepClass
+    public abstract class AnimationStepClass<T> where T : IComparable<T>
     {
+        public Node<T> Node;
         public bool IsRedInitial;
         public bool IsRedFinal;
         public Point InitialPosition;
-        public Point FinalPosition;
         public float time;
         
-        public AnimationStepClass(bool isRedInitial, bool isRedFinal, Point initPos, Point finalPos, float time)
+        public AnimationStepClass(bool isRedInitial, bool isRedFinal, Point initPos, Node<T> node, float time)
         {
             this.IsRedInitial = isRedInitial;
             this.IsRedFinal = isRedFinal;
             this.InitialPosition = initPos;
-            this.FinalPosition = finalPos;
+            Node = node;
             this.time = time;
         }
 

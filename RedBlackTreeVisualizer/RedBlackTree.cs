@@ -13,7 +13,7 @@ namespace RedBlackTreeVisualizer
     public class RedBlackTree<T> where T : IComparable<T>
     {
         public Node<T> Root { get; private set; }
-
+        TreeLayout<T> layout;
         private void FlipColor(Node<T> current)
         {
             current.IsBlack = !current.IsBlack;
@@ -23,16 +23,26 @@ namespace RedBlackTreeVisualizer
 
         public void Insert(T value)
         {
+            bool initColorRed = false;
+            Point initPos = new Point(0, 0);
+            float time = 1.0f;
+            Node<T> node;
             if (Root == null)
             {
                 Root = new Node<T>(true);
                 Root.Value = value;
+                node = Root;
                 return;
 
             }
             Root = InsertRec(value, Root);
-            Root.IsBlack = true;
+            node = Search(value);
 
+            layout.animationSteps.Enqueue(new InsertAnimationStep<T>(initColorRed, !node.IsBlack, initPos, node, time));
+
+
+            Root.IsBlack = true;
+            
 
 
         }

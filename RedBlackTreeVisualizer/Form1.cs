@@ -25,7 +25,9 @@ namespace RedBlackTreeVisualizer
                 {
                     int value = int.Parse(insertTextBox.Text);
                     rbt.Insert(value);
-                    layout.DrawTree(rbt.Search(value));
+                    Node<int> node = rbt.Search(value);
+                    layout.DrawTree(rbt.Search(node.Value));
+                    layout.animationSteps.Enqueue(new InsertAnimationStep(node.IsBlack, node.IsBlack, new Point(0, 0), new Point());
                 }
                 catch (Exception ex)
                 {

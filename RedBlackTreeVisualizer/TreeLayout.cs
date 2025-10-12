@@ -12,6 +12,7 @@ namespace RedBlackTreeVisualizer
         RedBlackTree<T> tree;
         Panel visualizerPanel;
         Graphics gfx;
+        public Queue<AnimationStepClass> animationSteps = new Queue<AnimationStepClass>();
         public TreeLayout(RedBlackTree<T> tree, Panel visualizerPanel, Graphics gfx)
         {
             this.gfx = gfx;
