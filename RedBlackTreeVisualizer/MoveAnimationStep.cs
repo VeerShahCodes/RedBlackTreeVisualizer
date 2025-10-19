@@ -9,14 +9,15 @@ namespace RedBlackTreeVisualizer
     public class MoveAnimationStep : AnimationStepClass
     {
         Label label;
-        Panel visualizerPanel;
-        public MoveAnimationStep(bool isRedFinal, Point initPos, Node<int> node, TreeLayout layout, Panel visualizerPanel) : base(false, isRedFinal, initPos, node, layout)
+        PictureBox visualizerPanel;
+        public MoveAnimationStep(bool isRedFinal, Point initPos, Point finalPos, Node<int> node, TreeLayout layout, PictureBox visualizerPanel) : base(false, isRedFinal, initPos, node, layout)
         {
             this.IsRedFinal = isRedFinal;
             this.InitialPosition = initPos;
             this.Node = node;
             this.layout = layout;
             this.visualizerPanel = visualizerPanel;
+            this.FinalPosition = finalPos;
             label = new Label();
             label.Location = initPos;
             if(isRedFinal)
@@ -33,7 +34,9 @@ namespace RedBlackTreeVisualizer
             label.ForeColor = Color.Yellow;
 
 
+
         }
+
 
         public override void PerformStep(Graphics gfx)
         {

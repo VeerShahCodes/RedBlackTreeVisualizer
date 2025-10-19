@@ -10,10 +10,10 @@ namespace RedBlackTreeVisualizer
     public class TreeLayout
     {
         RedBlackTree<int> tree;
-        public Panel visualizerPanel;
+        public PictureBox visualizerPanel;
         Graphics gfx;
         public Queue<List<AnimationStepClass>> animationSteps = new Queue<List<AnimationStepClass>>();
-        public TreeLayout(RedBlackTree<int> tree, Panel visualizerPanel, Graphics gfx)
+        public TreeLayout(RedBlackTree<int> tree, PictureBox visualizerPanel, Graphics gfx)
         {
             this.gfx = gfx;
             this.tree = tree;
@@ -78,7 +78,7 @@ namespace RedBlackTreeVisualizer
 
             if (isNew)
             {
-                animationSteps.Peek()[0].FinalPosition = new Point(x, y);
+              //  animationSteps.Peek()[0].FinalPosition = new Point(x, y);
 
                 label.ForeColor = Color.Yellow;
             }
@@ -109,6 +109,12 @@ namespace RedBlackTreeVisualizer
             {
                 gfx.DrawLine(pen, label.Location.X + label.Size.Width, label.Location.Y + label.Size.Height, x + (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) - width, y + visualizerPanel.Height / depth - height);
             }
+
+        }
+
+        public Point FindFinalPosition(int horizontalMovement, int verticalMovement)
+        {
+            int depth = FindDepth(tree.Root);
 
         }
     }

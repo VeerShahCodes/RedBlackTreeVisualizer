@@ -23,28 +23,40 @@ namespace RedBlackTreeVisualizer
 
         public void Insert(T value)
         {
-
+            Queue<List<AnimationStepClass>> prevSteps = new Queue<List<AnimationStepClass>>();
             if (Root == null)
             {
+
                 Root = new Node<T>(true);
                 Root.Value = value;
+                List<AnimationStepClass> steps = new List<AnimationStepClass>();
+                MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new System.Drawing.Point(0, 0), new Point(layout.visualizerPanel.Width / 2 + 10), (Node<int>)(object)Root, layout, layout.visualizerPanel);
+                steps.Add(moveAnimationStep);
+                prevSteps.Enqueue(steps);
+                layout.animationSteps = prevSteps;
                 return;
 
             }
-            Queue<List<AnimationStepClass>> prevSteps = new Queue<List<AnimationStepClass>>();
 
-            Root = InsertRec(value, Root);
+            int horizontalMovement = 0;
+            int verticalMovement = 0;
+            Root = InsertRec(value, Root, horizontalMovement, verticalMovement);
 
-            Node<T> InsertRec(T value, Node<T> current)
+            Node<T> InsertRec(T value, Node<T> current, int horizontalMovement, int verticalMovement)
             {
                 List<AnimationStepClass> animationSteps = new List<AnimationStepClass>();
                 
                 if (current == null)
                 {
                     current = new Node<T>(false);
-                    List<AnimationStepClass> steps = new List<AnimationStepClass>();
-                    steps.Add(new MoveAnimationStep(false, new System.Drawing.Point(0, 0), (Node<int>)(object)current, layout, layout.visualizerPanel));
+
                     current.Value = value;
+                    List<AnimationStepClass> steps = new List<AnimationStepClass>();
+                    int finalX = layout.visualizerPanel.Width / 2 - (layout.visualizerPanel.Width / (verticalMovement + 1)) / (verticalMovement + 1) + 20;
+                    int finalY = layout.visualizerPanel.Height / verticalMovement - 20;
+                    MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new System.Drawing.Point(0, 0), new Point(finalX, finalY), (Node<int>)(object)current, layout, layout.visualizerPanel);
+                    steps.Add(moveAnimationStep);
+                    prevSteps.Enqueue(steps);
 
                     return current;
                 }
@@ -52,11 +64,17 @@ namespace RedBlackTreeVisualizer
                 if (current.Value.CompareTo(value) == 0) throw new Exception("duplicates");
                 else if (current.Value.CompareTo(value) > 0)
                 {
-                    current.LeftChild = InsertRec(value, current.LeftChild);
+                    horizontalMovement--;
+                    verticalMovement++;
+                    current.LeftChild = InsertRec(value, current.LeftChild, horizontalMovement, verticalMovement);
+
                 }
                 else
                 {
-                    current.RightChild = InsertRec(value, current.RightChild);
+                    horizontalMovement++;
+                    verticalMovement++;
+                    current.RightChild = InsertRec(value, current.RightChild, horizontalMovement, verticalMovement);
+
                 }
 
                 if (IsRed(current.RightChild) && !IsRed(current.LeftChild))
@@ -82,7 +100,7 @@ namespace RedBlackTreeVisualizer
             }
 
             Root.IsBlack = true;
-            
+            layout.animationSteps = prevSteps;
 
 
         }

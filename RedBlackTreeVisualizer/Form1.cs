@@ -5,17 +5,23 @@ namespace RedBlackTreeVisualizer
         RedBlackTree<int> rbt;
         TreeLayout layout;
         Graphics gfx;
+        Bitmap image;
         public Form1()
         {
             rbt = new RedBlackTree<int>();
-            rbt.layout = layout;
+           
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            layout = new TreeLayout(rbt, treePanel, treePanel.CreateGraphics());
-            gfx = treePanel.CreateGraphics();
+            image = new Bitmap(treePictureBox.Width, treePictureBox.Height);
+            gfx = Graphics.FromImage(image);
+
+            layout = new TreeLayout(rbt, treePictureBox, gfx);
+            rbt.layout = layout;
+
+            
         }
 
         private void insertButton_Click(object sender, EventArgs e)
@@ -27,11 +33,9 @@ namespace RedBlackTreeVisualizer
                     int value = int.Parse(insertTextBox.Text);
                     rbt.Insert(value);
                     Node<int> node = rbt.Search(value);
-                    List<AnimationStepClass> steps = new List<AnimationStepClass>();
-                    steps.Add(new MoveAnimationStep(!node.IsBlack, new Point(0, 0), node, layout, treePanel));
-                    layout.animationSteps.Enqueue(steps);
-                    layout.DrawTree(rbt.Search(node.Value));
 
+                    layout.DrawTree(rbt.Search(node.Value));
+                    timer1.Start();
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +71,7 @@ namespace RedBlackTreeVisualizer
         {
             if(layout.animationSteps.Count > 0)
             {
-                gfx.Clear(treePanel.BackColor);
+                gfx.Clear(treePictureBox.BackColor);                
 
                 layout.DrawTree(null);
 
@@ -75,9 +79,12 @@ namespace RedBlackTreeVisualizer
                 if (layout.animationSteps.Peek()[0].isCompleted)
                 {
                     layout.animationSteps.Dequeue();
-                }
+                    timer1.Stop();
+                }                
+
             }
 
+            treePictureBox.Image = image;
         }
     }
 }

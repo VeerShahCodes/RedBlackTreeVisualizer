@@ -33,8 +33,9 @@
             removeTextBox = new TextBox();
             insertButton = new Button();
             removeButton = new Button();
-            treePanel = new Panel();
             timer1 = new System.Windows.Forms.Timer(components);
+            treePictureBox = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)treePictureBox).BeginInit();
             SuspendLayout();
             // 
             // insertTextBox
@@ -71,19 +72,19 @@
             removeButton.UseVisualStyleBackColor = true;
             removeButton.Click += removeButton_Click;
             // 
-            // treePanel
-            // 
-            treePanel.BackColor = Color.LightBlue;
-            treePanel.Location = new Point(238, 12);
-            treePanel.Name = "treePanel";
-            treePanel.Size = new Size(600, 600);
-            treePanel.TabIndex = 6;
-            // 
             // timer1
             // 
             timer1.Enabled = true;
             timer1.Interval = 20;
             timer1.Tick += timer1_Tick;
+            // 
+            // treePictureBox
+            // 
+            treePictureBox.Location = new Point(199, 11);
+            treePictureBox.Name = "treePictureBox";
+            treePictureBox.Size = new Size(773, 544);
+            treePictureBox.TabIndex = 7;
+            treePictureBox.TabStop = false;
             // 
             // Form1
             // 
@@ -91,7 +92,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LightBlue;
             ClientSize = new Size(984, 639);
-            Controls.Add(treePanel);
+            Controls.Add(treePictureBox);
             Controls.Add(removeButton);
             Controls.Add(insertButton);
             Controls.Add(removeTextBox);
@@ -99,6 +100,7 @@
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)treePictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -109,7 +111,7 @@
         private TextBox removeTextBox;
         private Button insertButton;
         private Button removeButton;
-        private Panel treePanel;
         private System.Windows.Forms.Timer timer1;
+        private PictureBox treePictureBox;
     }
 }
