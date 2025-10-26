@@ -12,6 +12,8 @@ namespace RedBlackTreeVisualizer
         public T Value { get; set; }
         public Node<T> LeftChild { get; set; }
         public Node<T> RightChild { get; set; }
+
+        public Point PosBeforeRotate { get; set; }
         public Node(bool isBlack)
         {
             IsBlack = isBlack;

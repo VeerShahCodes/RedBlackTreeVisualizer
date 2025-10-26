@@ -30,7 +30,7 @@ namespace RedBlackTreeVisualizer
                 Root = new Node<T>(true);
                 Root.Value = value;
                 List<AnimationStepClass> steps = new List<AnimationStepClass>();
-                MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new System.Drawing.Point(0, 0), new Point(layout.visualizerPanel.Width / 2 + 10), (Node<int>)(object)Root, layout, layout.visualizerPanel);
+                MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new System.Drawing.Point(-5, 0), new Point(0, 0), (Node<int>)(object)Root, layout, layout.visualizerPanel);
                 steps.Add(moveAnimationStep);
                 prevSteps.Enqueue(steps);
                 layout.animationSteps = prevSteps;
@@ -51,10 +51,9 @@ namespace RedBlackTreeVisualizer
                     current = new Node<T>(false);
 
                     current.Value = value;
+                    current.PosBeforeRotate = new Point(horizontalMovement, verticalMovement);
                     List<AnimationStepClass> steps = new List<AnimationStepClass>();
-                    int finalX = layout.visualizerPanel.Width / 2 - (layout.visualizerPanel.Width / (verticalMovement + 1)) / (verticalMovement + 1) + 20;
-                    int finalY = layout.visualizerPanel.Height / verticalMovement - 20;
-                    MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new System.Drawing.Point(0, 0), new Point(finalX, finalY), (Node<int>)(object)current, layout, layout.visualizerPanel);
+                    MoveAnimationStep moveAnimationStep = new MoveAnimationStep(false, new Point(0, 0), current.PosBeforeRotate, (Node<int>)(object)current, layout, layout.visualizerPanel);
                     steps.Add(moveAnimationStep);
                     prevSteps.Enqueue(steps);
 
@@ -80,6 +79,12 @@ namespace RedBlackTreeVisualizer
                 if (IsRed(current.RightChild) && !IsRed(current.LeftChild))
                 {
                     Node<T> prev = current;
+                    List<AnimationStepClass> rotateSteps = new List<AnimationStepClass>();
+                    Point posAfterRotateCurrent = new Point(current.PosBeforeRotate.X - 1, current.PosBeforeRotate.Y + 1);
+                    Point posAfterRotateCurrentRightChild = new Point(current.RightChild.PosBeforeRotate.X - 1, current.RightChild.PosBeforeRotate.Y - 1);
+                    MoveAnimationStep moveAnimation1 = new MoveAnimationStep(!current.IsBlack, current.PosBeforeRotate, posAfterRotateCurrent, (Node<int>)(object)current, layout, layout.visualizerPanel);
+                    MoveAnimationStep moveAnimation2 = new MoveAnimationStep(!current.RightChild.IsBlack, current.RightChild.PosBeforeRotate, posAfterRotateCurrentRightChild, (Node<int>)(object)current.RightChild, layout, layout.visualizerPanel);
+                    
                     current = RotateLeft(current);
                 
                 }
@@ -112,7 +117,7 @@ namespace RedBlackTreeVisualizer
 
         public Node<T> RotateLeft(Node<T> current)
         {
-
+            
             Node<T> temp = current.RightChild!;
             current.RightChild = temp.LeftChild;
             temp.LeftChild = current;

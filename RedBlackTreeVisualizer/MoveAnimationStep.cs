@@ -33,13 +33,14 @@ namespace RedBlackTreeVisualizer
             label.AutoSize = true;
             label.ForeColor = Color.Yellow;
 
-
-
+            InitialPosition = layout.TranslatePointToPosition(InitialPosition);
+            FinalPosition = layout.TranslatePointToPosition(FinalPosition);
         }
-
 
         public override void PerformStep(Graphics gfx)
         {
+            
+           
             if(InitialPosition != FinalPosition)
             {
                 

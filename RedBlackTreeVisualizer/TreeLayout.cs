@@ -112,11 +112,35 @@ namespace RedBlackTreeVisualizer
 
         }
 
-        public Point FindFinalPosition(int horizontalMovement, int verticalMovement)
+        public Point TranslatePointToPosition(Point point)
         {
             int depth = FindDepth(tree.Root);
+            int x = visualizerPanel.Width / 2 - 10;
+            int y = 0;
 
+            if(point.X < 0)
+            {
+                for(int i = 0; i < point.X * -1; i++)
+                {
+                    x -= (visualizerPanel.Width / (depth + 1)) / (point.Y + 1) + 20;
+                }
+            }
+            else if(point.X > 0)
+            {
+                for(int i = 0; i < point.X; i++)
+                {
+                    x += (visualizerPanel.Width / (depth + 1)) / (point.Y + 1) + 20;
+                }
+            }
+
+            for(int i = 0; i < point.Y; i++)
+            {
+                y += y + visualizerPanel.Height / depth - 20;
+            }
+
+            return new Point(x, y);
         }
+
     }
 
 
