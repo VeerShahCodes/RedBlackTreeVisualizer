@@ -82,6 +82,10 @@ namespace RedBlackTreeVisualizer
                     timer1.Stop();
                     if(layout.animationSteps.Count > 0)
                     {
+                        if(layout.animationSteps.Peek().Count == 0)
+                        { 
+                            layout.animationSteps.Dequeue();
+                        }
                         timer2.Start();
                         timer2.Enabled = true;
                     }

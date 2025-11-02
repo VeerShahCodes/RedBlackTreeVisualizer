@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -109,7 +110,13 @@ namespace RedBlackTreeVisualizer
 
         public Point TranslatePointToPosition(Point point)
         {
-            int depth = FindDepth(tree.Root);
+            int depth = FindDepth(tree.Root) - 1;
+            if(depth == 0)
+            {
+                int initCurrY = 0;
+                int initCurrX = visualizerPanel.Width / 2 - 10;
+                return new Point(initCurrX, initCurrY);
+            }
             int x = visualizerPanel.Width / 2 - 10;
             int y = 0;
 
@@ -117,14 +124,14 @@ namespace RedBlackTreeVisualizer
             {
                 for(int i = 0; i < point.X * -1; i++)
                 {
-                    x -= (visualizerPanel.Width / (depth + 1)) / (point.Y + 1) + 20;
+                    x -= (visualizerPanel.Width / (depth + 1)) / (i + 1) + 20;
                 }
             }
             else if(point.X > 0)
             {
                 for(int i = 0; i < point.X; i++)
                 {
-                    x += (visualizerPanel.Width / (depth + 1)) / (point.Y + 1) + 20;
+                    x += (visualizerPanel.Width / (depth + 1)) / (i + 1) + 20;
                 }
             }
 
