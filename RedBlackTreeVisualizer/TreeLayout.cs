@@ -70,11 +70,6 @@ namespace RedBlackTreeVisualizer
 
             else label.BackColor = Color.Red;
 
-            if (animationSteps.Count > 0 && animationSteps.Peek()[0].Node.Value.CompareTo(node.Value) == 0 && !animationSteps.Peek()[0].isCompleted)
-            {
-                label.BackColor = Color.LightBlue;
-                label.Text = "";
-            }
 
             if (isNew)
             {
@@ -137,7 +132,7 @@ namespace RedBlackTreeVisualizer
             {
                 y += y + visualizerPanel.Height / depth - 20;
             }
-
+            ;
             return new Point(x, y);
         }
 

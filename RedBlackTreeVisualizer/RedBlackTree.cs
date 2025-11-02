@@ -84,12 +84,22 @@ namespace RedBlackTreeVisualizer
                     Point posAfterRotateCurrentRightChild = new Point(current.RightChild.PosBeforeRotate.X - 1, current.RightChild.PosBeforeRotate.Y - 1);
                     MoveAnimationStep moveAnimation1 = new MoveAnimationStep(!current.IsBlack, current.PosBeforeRotate, posAfterRotateCurrent, (Node<int>)(object)current, layout, layout.visualizerPanel);
                     MoveAnimationStep moveAnimation2 = new MoveAnimationStep(!current.RightChild.IsBlack, current.RightChild.PosBeforeRotate, posAfterRotateCurrentRightChild, (Node<int>)(object)current.RightChild, layout, layout.visualizerPanel);
-                    
+                    rotateSteps.Add(moveAnimation1);
+                    rotateSteps.Add(moveAnimation2);
+                    prevSteps.Enqueue(rotateSteps);
                     current = RotateLeft(current);
                 
                 }
                 if (IsRed(current.LeftChild) && IsRed(current.LeftChild.LeftChild))
                 {
+                    List<AnimationStepClass> rotateSteps = new List<AnimationStepClass>();
+                    Point posAfterRotateCurrent = new Point(current.PosBeforeRotate.X + 1, current.PosBeforeRotate.Y + 1);
+                    Point posAfterRotateCurrentLeftChild = new Point(current.LeftChild.PosBeforeRotate.X + 1, current.LeftChild.PosBeforeRotate.Y - 1);
+                    MoveAnimationStep moveAnimation1 = new MoveAnimationStep(!current.IsBlack, current.PosBeforeRotate, posAfterRotateCurrent, (Node<int>)(object)current, layout, layout.visualizerPanel);
+                    MoveAnimationStep moveAnimation2 = new MoveAnimationStep(!current.LeftChild.IsBlack, current.LeftChild.PosBeforeRotate, posAfterRotateCurrentLeftChild, (Node<int>)(object)current.LeftChild, layout, layout.visualizerPanel);
+                    rotateSteps.Add(moveAnimation1);
+                    rotateSteps.Add(moveAnimation2);
+                    prevSteps.Enqueue(rotateSteps);
                     current = RotateRight(current);
                 }
                 if (IsRed(current.LeftChild) && IsRed(current.RightChild))

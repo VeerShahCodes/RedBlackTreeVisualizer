@@ -35,6 +35,7 @@
             removeButton = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             treePictureBox = new PictureBox();
+            timer2 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)treePictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -86,6 +87,12 @@
             treePictureBox.TabIndex = 7;
             treePictureBox.TabStop = false;
             // 
+            // timer2
+            // 
+            timer2.Enabled = true;
+            timer2.Interval = 20;
+            timer2.Tick += timer2_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -113,5 +120,6 @@
         private Button removeButton;
         private System.Windows.Forms.Timer timer1;
         private PictureBox treePictureBox;
+        private System.Windows.Forms.Timer timer2;
     }
 }

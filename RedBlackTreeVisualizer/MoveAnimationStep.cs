@@ -32,9 +32,10 @@ namespace RedBlackTreeVisualizer
             label.Text = node.Value.ToString();
             label.AutoSize = true;
             label.ForeColor = Color.Yellow;
-
+            
             InitialPosition = layout.TranslatePointToPosition(InitialPosition);
             FinalPosition = layout.TranslatePointToPosition(FinalPosition);
+            ;
         }
 
         public override void PerformStep(Graphics gfx)
@@ -47,7 +48,7 @@ namespace RedBlackTreeVisualizer
                 int yDisplacement = FinalPosition.Y - InitialPosition.Y;
                 int xDisplacement = FinalPosition.X - InitialPosition.X;
 
-                if (xDisplacement <= 25 && yDisplacement <= 25)
+                if (Math.Abs(xDisplacement) <= 25 && Math.Abs(yDisplacement) <= 25)
                 {
                     InitialPosition = FinalPosition;
                     isCompleted = true;
@@ -66,6 +67,15 @@ namespace RedBlackTreeVisualizer
                 gfx.DrawEllipse(new Pen(Color.Blue, 3), new Rectangle(InitialPosition.X - 10, InitialPosition.Y - 10, 30, 30));
                 
 
+            }
+        }
+
+        public override void PerformStepUntilComplete(Graphics gfx, PictureBox treePictureBox)
+        {
+            while (!isCompleted)
+            {
+                gfx.Clear(treePictureBox.BackColor);
+                PerformStep(gfx);
             }
         }
 

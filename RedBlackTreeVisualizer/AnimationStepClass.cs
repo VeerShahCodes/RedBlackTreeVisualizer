@@ -27,6 +27,7 @@ namespace RedBlackTreeVisualizer
 
         public abstract void PerformStep(Graphics gfx);
 
+        public abstract void PerformStepUntilComplete(Graphics gfx, PictureBox treePictureBox);
 
     }
 }

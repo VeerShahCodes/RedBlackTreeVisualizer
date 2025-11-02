@@ -9,7 +9,7 @@ namespace RedBlackTreeVisualizer
         public Form1()
         {
             rbt = new RedBlackTree<int>();
-           
+
             InitializeComponent();
         }
 
@@ -17,11 +17,11 @@ namespace RedBlackTreeVisualizer
         {
             image = new Bitmap(treePictureBox.Width, treePictureBox.Height);
             gfx = Graphics.FromImage(image);
-
+            timer2.Enabled = false;
             layout = new TreeLayout(rbt, treePictureBox, gfx);
             rbt.layout = layout;
 
-            
+
         }
 
         private void insertButton_Click(object sender, EventArgs e)
@@ -69,9 +69,9 @@ namespace RedBlackTreeVisualizer
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if(layout.animationSteps.Count > 0)
+            if (layout.animationSteps.Count > 0)
             {
-                gfx.Clear(treePictureBox.BackColor);                
+                gfx.Clear(treePictureBox.BackColor);
 
                 layout.DrawTree(null);
 
@@ -80,11 +80,47 @@ namespace RedBlackTreeVisualizer
                 {
                     layout.animationSteps.Dequeue();
                     timer1.Stop();
-                }                
+                    if(layout.animationSteps.Count > 0)
+                    {
+                        timer2.Start();
+                        timer2.Enabled = true;
+                    }
+
+
+
+
+
+
+
+                 
+                }
+
 
             }
 
             treePictureBox.Image = image;
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            gfx.Clear(treePictureBox.BackColor);
+            layout.DrawTree(null);
+
+            for (int i = 0; i < layout.animationSteps.Peek().Count; i++)
+            {
+                layout.animationSteps.Peek()[i].PerformStep(gfx);
+                if(layout.animationSteps.Peek()[i].isCompleted)
+                {
+                    layout.animationSteps.Peek().RemoveAt(i);
+                    i--;
+                }
+            }
+            if(layout.animationSteps.Peek().Count == 0)
+            {
+                layout.animationSteps.Dequeue();
+                timer2.Stop();
+
+            }
         }
     }
 }
