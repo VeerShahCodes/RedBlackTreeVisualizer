@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace RedBlackTreeVisualizer
 {
     public partial class Form1 : Form
@@ -86,8 +88,13 @@ namespace RedBlackTreeVisualizer
                         { 
                             layout.animationSteps.Dequeue();
                         }
-                        timer2.Start();
-                        timer2.Enabled = true;
+                        
+                        if(layout.animationSteps.Count > 0)
+                        {
+                            timer2.Start();
+                            timer2.Enabled = true;
+                        }
+
                     }
 
 
@@ -123,6 +130,7 @@ namespace RedBlackTreeVisualizer
             {
                 layout.animationSteps.Dequeue();
                 timer2.Stop();
+                timer2.Enabled = false;
 
             }
         }

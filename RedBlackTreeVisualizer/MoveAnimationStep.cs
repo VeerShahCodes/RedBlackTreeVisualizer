@@ -35,6 +35,11 @@ namespace RedBlackTreeVisualizer
             
             InitialPosition = layout.TranslatePointToPosition(InitialPosition);
             FinalPosition = layout.TranslatePointToPosition(FinalPosition);
+
+            if(FinalPosition.Equals(InitialPosition))
+            {
+                InitialPosition = new Point(0, 0);
+            }
             ;
         }
 
