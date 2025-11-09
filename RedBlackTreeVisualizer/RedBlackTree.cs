@@ -87,6 +87,7 @@ namespace RedBlackTreeVisualizer
                     rotateSteps.Add(moveAnimation1);
                     rotateSteps.Add(moveAnimation2);
                     prevSteps.Enqueue(rotateSteps);
+                    current.PosBeforeRotate = posAfterRotateCurrent;
                     current = RotateLeft(current);
                 
                 }
@@ -100,6 +101,7 @@ namespace RedBlackTreeVisualizer
                     rotateSteps.Add(moveAnimation1);
                     rotateSteps.Add(moveAnimation2);
                     prevSteps.Enqueue(rotateSteps);
+                    current.PosBeforeRotate = posAfterRotateCurrent;
                     current = RotateRight(current);
                 }
                 if (IsRed(current.LeftChild) && IsRed(current.RightChild))
