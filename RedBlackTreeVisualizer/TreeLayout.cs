@@ -10,10 +10,12 @@ namespace RedBlackTreeVisualizer
 {
     public class TreeLayout
     {
+        int nodeSize = 20;
         RedBlackTree<int> tree;
         public PictureBox visualizerPanel;
         Graphics gfx;
         public Queue<List<AnimationStepClass>> animationSteps = new Queue<List<AnimationStepClass>>();
+        List<Point> allNodeLocations = new List<Point>();
         public TreeLayout(RedBlackTree<int> tree, PictureBox visualizerPanel, Graphics gfx)
         {
             this.gfx = gfx;
@@ -23,6 +25,7 @@ namespace RedBlackTreeVisualizer
 
         public void DrawTree(Node<int> newNode)
         {
+            allNodeLocations.Clear();
             visualizerPanel.Controls.Clear();
 
 
@@ -56,13 +59,17 @@ namespace RedBlackTreeVisualizer
 
         public void DrawTreeRec(Node<int> node, int x, int y, int width, int height, int depth, int currDepth, Node<int> newNode)
         {
+            
             if (node == null) return;
             bool isNew = false;
             if (newNode != null && node.Value.CompareTo(newNode.Value) == 0)
             {
                 isNew = true;
             }
-
+            if(!allNodeLocations.Contains(new Point(x, y)))
+            {
+                allNodeLocations.Add(new Point(x, y));
+            }
             Label label = new Label();
             label.Text = node.Value.ToString();
             label.AutoSize = true;
@@ -76,6 +83,7 @@ namespace RedBlackTreeVisualizer
             {
               //  animationSteps.Peek()[0].FinalPosition = new Point(x, y);
 
+                
                 label.ForeColor = Color.Yellow;
             }
             else
@@ -110,34 +118,46 @@ namespace RedBlackTreeVisualizer
 
         public Point TranslatePointToPosition(Point point)
         {
+            //y + visualizerPanel.Height / depth - height
+            //x - (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) + width
+            DrawTree(null);
             int depth = FindDepth(tree.Root) - 1;
             if(depth == 0)
             {
                 int initCurrY = 0;
-                int initCurrX = visualizerPanel.Width / 2 - 10;
+                int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
                 return new Point(initCurrX, initCurrY);
             }
-            int x = visualizerPanel.Width / 2 - 10;
+            int x = visualizerPanel.Width / 2 - nodeSize / 2;
             int y = 0;
 
             if(point.X < 0)
             {
                 for(int i = 0; i < point.X * -1; i++)
                 {
-                    x -= (visualizerPanel.Width / (depth + 1)) / (i + 1) + 20;
+                    x -= (visualizerPanel.Width / (depth + 1)) / (i + 1) + nodeSize;
                 }
             }
             else if(point.X > 0)
             {
                 for(int i = 0; i < point.X; i++)
                 {
-                    x += (visualizerPanel.Width / (depth + 1)) / (i + 1) + 20;
+                    x += (visualizerPanel.Width / (depth + 1)) / (i + 1) - nodeSize;
                 }
             }
 
             for(int i = 0; i < point.Y; i++)
             {
-                y += y + visualizerPanel.Height / depth - 20;
+                y += visualizerPanel.Height / depth - nodeSize;
+            }
+            Point pointTest = new Point(x, y);
+            foreach(var item in allNodeLocations)
+            {
+                if(item.Equals(pointTest))
+                {
+                    ;
+                    return pointTest;
+                }
             }
             ;
             return new Point(x, y);
