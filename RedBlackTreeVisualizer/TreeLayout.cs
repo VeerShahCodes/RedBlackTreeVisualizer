@@ -116,6 +116,41 @@ namespace RedBlackTreeVisualizer
 
         }
 
+        private int GetXPos(Point point)
+        {
+            return recGetXPos(point, FindDepth(tree.Root) - 1, 0, visualizerPanel.Width / 2 - nodeSize / 2);
+        }
+        private int recGetXPos(Point point, int depth, int currDepth, int x)
+        {
+            if (currDepth == Math.Abs(point.X))
+            {
+                return x;
+            }
+
+            if (point.X < 0)
+            {
+                return recGetXPos(point, depth, currDepth + 1, x - visualizerPanel.Width / (depth + 1) / (currDepth + 1) + nodeSize);
+
+            }
+            else
+            {
+                return recGetXPos(point, depth, currDepth + 1, x + visualizerPanel.Width / (depth + 1) / (currDepth + 1) - nodeSize);
+            }
+        }
+
+        private int GetYPos(Point point)
+        {
+            return RecGetYPos(point, FindDepth(tree.Root) - 1, 0, 0);
+        }
+        private int RecGetYPos(Point point, int depth, int currDepth, int y)
+        {
+            if(currDepth == point.Y)
+            {
+                return y;
+            }
+
+            return RecGetYPos(point, depth, currDepth + 1, y + visualizerPanel.Height / depth - nodeSize);
+        }
         public Point TranslatePointToPosition(Point point)
         {
             //y + visualizerPanel.Height / depth - height
@@ -128,38 +163,10 @@ namespace RedBlackTreeVisualizer
                 int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
                 return new Point(initCurrX, initCurrY);
             }
-            int x = visualizerPanel.Width / 2 - nodeSize / 2;
-            int y = 0;
+      
+            int y = GetYPos(point);
+            int x = GetXPos(point);
 
-            if(point.X < 0)
-            {
-                for(int i = 0; i < point.X * -1; i++)
-                {
-                    x -= (visualizerPanel.Width / (depth + 1)) / (i + 1) + nodeSize;
-                }
-            }
-            else if(point.X > 0)
-            {
-                for(int i = 0; i < point.X; i++)
-                {
-                    x += (visualizerPanel.Width / (depth + 1)) / (i + 1) - nodeSize;
-                }
-            }
-
-            for(int i = 0; i < point.Y; i++)
-            {
-                y += visualizerPanel.Height / depth - nodeSize;
-            }
-            Point pointTest = new Point(x, y);
-            foreach(var item in allNodeLocations)
-            {
-                if(item.Equals(pointTest))
-                {
-                    ;
-                    return pointTest;
-                }
-            }
-            ;
             return new Point(x, y);
         }
 
