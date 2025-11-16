@@ -157,7 +157,7 @@ namespace RedBlackTreeVisualizer
         public Point TranslatePointToPosition(Point point)
         {
 
-            DrawTree(null);
+            //DrawTree(null);
             int depth = FindDepth(tree.Root) - 1;
             if (depth == 0)
             {
@@ -165,6 +165,7 @@ namespace RedBlackTreeVisualizer
                 int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
                 return new Point(initCurrX, initCurrY);
             }
+
 
             int y = GetYPos(point, depth);
             int x = GetXPos(point, depth);
@@ -174,7 +175,7 @@ namespace RedBlackTreeVisualizer
         public Point TranslatePointToPosition(Point point, bool isFinalPos)
         {
 
-            DrawTree(null);
+           // DrawTree(null);
             int depth = FindDepth(tree.Root) - 1;
             if(!isFinalPos && depth == 0)
             {
@@ -182,7 +183,7 @@ namespace RedBlackTreeVisualizer
                 int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
                 return new Point(initCurrX, initCurrY);
             }
-            ;
+            
             if(depth == 0)
             {
                 depth = 1;

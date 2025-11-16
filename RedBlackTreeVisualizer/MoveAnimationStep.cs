@@ -10,6 +10,12 @@ namespace RedBlackTreeVisualizer
     {
         Label label;
         PictureBox visualizerPanel;
+        int xDisplacement;
+        int yDisplacement;
+        int framesX;
+        int framesY;
+        int xIncrement;
+        int yIncrement;
         public MoveAnimationStep(bool isRedFinal, Point initPos, Point finalPos, Node<int> node, TreeLayout layout, PictureBox visualizerPanel) : base(false, isRedFinal, initPos, node, layout)
         {
             this.IsRedFinal = isRedFinal;
@@ -35,14 +41,29 @@ namespace RedBlackTreeVisualizer
             
             InitialPosition = layout.TranslatePointToPosition(InitialPosition, false);
             FinalPosition = layout.TranslatePointToPosition(FinalPosition, true);
-
-            if(FinalPosition.Equals(InitialPosition))
+            if (FinalPosition.Equals(InitialPosition))
             {
                 InitialPosition = new Point(0, 0);
             }
-            ;
-        }
+            yDisplacement = FinalPosition.Y - InitialPosition.Y;
+            xDisplacement = FinalPosition.X - InitialPosition.X;
+             xIncrement = (int)(xDisplacement * 0.1);
+             yIncrement = (int)(yDisplacement * 0.1);
+            if(xIncrement != 0)
+            {
+                framesX = xDisplacement / xIncrement;
 
+            }
+            if(yIncrement != 0)
+            {
+                framesY = yDisplacement / yIncrement;
+
+            }
+
+                ;
+        }
+        int countX = 0;
+        int countY = 0;
         public override void PerformStep(Graphics gfx)
         {
             
@@ -50,22 +71,34 @@ namespace RedBlackTreeVisualizer
             if(InitialPosition != FinalPosition)
             {
                 
-                int yDisplacement = FinalPosition.Y - InitialPosition.Y;
-                int xDisplacement = FinalPosition.X - InitialPosition.X;
 
-                if (Math.Abs(xDisplacement) <= 25 && Math.Abs(yDisplacement) <= 25)
+
+                if (countX == framesX)
                 {
-                    InitialPosition = FinalPosition;
-                    isCompleted = true;
+                    InitialPosition.X = FinalPosition.X;
+                    
 
+                }
+                if(countY == framesY)
+                {
+                    InitialPosition.Y = FinalPosition.Y;
+                }
+
+                if(countX == framesX && countY == framesY)
+                {
+                    isCompleted = true;
+                    InitialPosition = FinalPosition;
                 }
                 else
                 {
-                    int xIncrement = (int)(xDisplacement * 0.1);
-                    int yIncrement = (int)(yDisplacement * 0.1);
                     InitialPosition = new Point(InitialPosition.X + xIncrement, InitialPosition.Y + yIncrement);
+                    countX++;
+                    countY++;
+
                 }
-         
+
+
+
                 label.Location = InitialPosition;
                 visualizerPanel.Controls.Add(label);
 
