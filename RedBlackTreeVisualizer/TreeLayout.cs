@@ -190,6 +190,7 @@ namespace RedBlackTreeVisualizer
             int y = GetYPos(point, depth);
             int x = GetXPos(point, depth);
 
+
             return new Point(x, y);
         }
 
