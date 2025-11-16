@@ -49,7 +49,6 @@ namespace RedBlackTreeVisualizer
                 if (current == null)
                 {
                     current = new Node<T>(false);
-
                     current.Value = value;
                     current.PosBeforeRotate = new Point(horizontalMovement, verticalMovement);
                     List<AnimationStepClass> steps = new List<AnimationStepClass>();

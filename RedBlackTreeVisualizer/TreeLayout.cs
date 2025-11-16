@@ -70,6 +70,7 @@ namespace RedBlackTreeVisualizer
             {
                 allNodeLocations.Add(new Point(x, y));
             }
+            Pen pen = new Pen(Color.Black, 2);
             Label label = new Label();
             label.Text = node.Value.ToString();
             label.AutoSize = true;
@@ -81,7 +82,7 @@ namespace RedBlackTreeVisualizer
 
             if (isNew)
             {
-              //  animationSteps.Peek()[0].FinalPosition = new Point(x, y);
+                //  animationSteps.Peek()[0].FinalPosition = new Point(x, y);
 
                 
                 label.ForeColor = Color.Yellow;
@@ -94,9 +95,11 @@ namespace RedBlackTreeVisualizer
             label.Size = new Size(width, height);
             label.Location = new Point(x, y);
 
-            Pen pen = new Pen(Color.Black, 2);
 
             visualizerPanel.Controls.Add(label);
+
+            
+
 
             if (depth == 0) return;
 
@@ -116,9 +119,9 @@ namespace RedBlackTreeVisualizer
 
         }
 
-        private int GetXPos(Point point)
+        private int GetXPos(Point point, int depth)
         {
-            return recGetXPos(point, FindDepth(tree.Root) - 1, 0, visualizerPanel.Width / 2 - nodeSize / 2);
+            return recGetXPos(point, depth, 0, visualizerPanel.Width / 2 - nodeSize / 2);
         }
         private int recGetXPos(Point point, int depth, int currDepth, int x)
         {
@@ -138,9 +141,9 @@ namespace RedBlackTreeVisualizer
             }
         }
 
-        private int GetYPos(Point point)
+        private int GetYPos(Point point, int depth)
         {
-            return RecGetYPos(point, FindDepth(tree.Root) - 1, 0, 0);
+            return RecGetYPos(point, depth, 0, 0);
         }
         private int RecGetYPos(Point point, int depth, int currDepth, int y)
         {
@@ -153,22 +156,43 @@ namespace RedBlackTreeVisualizer
         }
         public Point TranslatePointToPosition(Point point)
         {
-            //y + visualizerPanel.Height / depth - height
-            //x - (visualizerPanel.Width / (depth + 1)) / (currDepth + 1) + width
+
             DrawTree(null);
             int depth = FindDepth(tree.Root) - 1;
-            if(depth == 0)
+            if (depth == 0)
             {
                 int initCurrY = 0;
                 int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
                 return new Point(initCurrX, initCurrY);
             }
-      
-            int y = GetYPos(point);
-            int x = GetXPos(point);
+
+            int y = GetYPos(point, depth);
+            int x = GetXPos(point, depth);
 
             return new Point(x, y);
         }
+        public Point TranslatePointToPosition(Point point, bool isFinalPos)
+        {
+
+            DrawTree(null);
+            int depth = FindDepth(tree.Root) - 1;
+            if(!isFinalPos && depth == 0)
+            {
+                int initCurrY = 0;
+                int initCurrX = visualizerPanel.Width / 2 - nodeSize / 2;
+                return new Point(initCurrX, initCurrY);
+            }
+            ;
+            if(depth == 0)
+            {
+                depth = 1;
+            }
+            int y = GetYPos(point, depth);
+            int x = GetXPos(point, depth);
+
+            return new Point(x, y);
+        }
+
 
     }
 

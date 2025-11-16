@@ -9,6 +9,7 @@ namespace RedBlackTreeVisualizer
     public class Node<T> where T : IComparable<T>
     {
         public bool IsBlack { get; set; }
+        public bool ShouldDraw { get; set; }
         public T Value { get; set; }
         public Node<T> LeftChild { get; set; }
         public Node<T> RightChild { get; set; }
@@ -17,12 +18,14 @@ namespace RedBlackTreeVisualizer
         public Node(bool isBlack)
         {
             IsBlack = isBlack;
+            ShouldDraw = true;
 
         }
         public Node(bool isBlack, T val)
         {
             IsBlack = isBlack;
             Value = val;
+            ShouldDraw = true;
         }
     }
 }
