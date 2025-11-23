@@ -90,7 +90,7 @@
             // timer2
             // 
             timer2.Enabled = true;
-            timer2.Interval = 20;
+            timer2.Interval = 40;
             timer2.Tick += timer2_Tick;
             // 
             // Form1

@@ -85,6 +85,31 @@ namespace RedBlackTreeVisualizer
                     MoveAnimationStep moveAnimation2 = new MoveAnimationStep(false, current.RightChild.PosBeforeRotate, posAfterRotateCurrentRightChild, (Node<int>)(object)current.RightChild, layout, layout.visualizerPanel);
                     rotateSteps.Add(moveAnimation1);
                     rotateSteps.Add(moveAnimation2);
+                    Point posAfterRotateRightRight;
+                    Point posAfterRotateRightLeft;
+                    Point posAfterRotateLeft;
+                    if(current.LeftChild != null)
+                    {
+                        posAfterRotateLeft = new Point(current.LeftChild.PosBeforeRotate.X - 1, current.LeftChild.PosBeforeRotate.Y + 1);
+                        MoveAnimationStep moveAnimation3 = new MoveAnimationStep(false, current.LeftChild.PosBeforeRotate, posAfterRotateLeft, (Node<int>)(object)current.LeftChild, layout, layout.visualizerPanel);
+                        rotateSteps.Add(moveAnimation3);
+                    }
+                    if(current.RightChild.LeftChild != null)
+                    {
+                        posAfterRotateRightLeft = new Point(current.RightChild.LeftChild.PosBeforeRotate.X - 2, current.RightChild.LeftChild.PosBeforeRotate.Y);
+                        MoveAnimationStep moveAnimation4 = new MoveAnimationStep(false, current.LeftChild.PosBeforeRotate, posAfterRotateRightLeft, (Node<int>)(object)current.RightChild.LeftChild, layout, layout.visualizerPanel);
+                        rotateSteps.Add(moveAnimation4);
+                    }
+                    if(current.RightChild.RightChild != null)
+                    {
+                        posAfterRotateRightRight = new Point(current.RightChild.RightChild.PosBeforeRotate.X - 1, current.RightChild.RightChild.PosBeforeRotate.Y - 1);
+                        MoveAnimationStep moveAnimation5 = new MoveAnimationStep(false, current.LeftChild.PosBeforeRotate, posAfterRotateRightRight, (Node<int>)(object)current.RightChild.LeftChild, layout, layout.visualizerPanel);
+                        rotateSteps.Add(moveAnimation5);
+                    }
+
+  
+                    
+                    
                     prevSteps.Enqueue(rotateSteps);
                     current.PosBeforeRotate = posAfterRotateCurrent;
                     current.RightChild.PosBeforeRotate = posAfterRotateCurrentRightChild;

@@ -92,8 +92,16 @@ namespace RedBlackTreeVisualizer
                 else
                 {
                     InitialPosition = new Point(InitialPosition.X + xIncrement, InitialPosition.Y + yIncrement);
-                    countX++;
-                    countY++;
+                    if(countX != framesX)
+                    {
+                        countX++;
+
+                    }
+                    if(countY != framesY)
+                    {
+                        countY++;
+
+                    }
 
                 }
 

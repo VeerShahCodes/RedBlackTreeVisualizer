@@ -125,11 +125,15 @@ namespace RedBlackTreeVisualizer
         }
         private int recGetXPos(Point point, int depth, int currDepth, int x)
         {
-            if (currDepth == Math.Abs(point.X))
+            if (currDepth == Math.Abs(point.Y))
             {
                 return x;
             }
 
+            if(point.X == 0)
+            {
+                return recGetXPos(point, depth, currDepth + 1, x);
+            }
             if (point.X < 0)
             {
                 return recGetXPos(point, depth, currDepth + 1, x - visualizerPanel.Width / (depth + 1) / (currDepth + 1) + nodeSize);
@@ -137,6 +141,7 @@ namespace RedBlackTreeVisualizer
             }
             else
             {
+               
                 return recGetXPos(point, depth, currDepth + 1, x + visualizerPanel.Width / (depth + 1) / (currDepth + 1) - nodeSize);
             }
         }
@@ -189,7 +194,12 @@ namespace RedBlackTreeVisualizer
                 depth = 1;
             }
             int y = GetYPos(point, depth);
+
+            
+            
             int x = GetXPos(point, depth);
+
+            
 
 
             return new Point(x, y);

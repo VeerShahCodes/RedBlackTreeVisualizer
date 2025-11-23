@@ -32,6 +32,9 @@ namespace RedBlackTreeVisualizer
             {
                 try
                 {
+                    timer2.Enabled = false;
+                    layout.animationSteps.Clear();
+
                     int value = int.Parse(insertTextBox.Text);
                     rbt.Insert(value);
                     Node<int> node = rbt.Search(value);
@@ -58,6 +61,7 @@ namespace RedBlackTreeVisualizer
                 {
                     int value = int.Parse(removeTextBox.Text);
                     rbt.Remove(value);
+                    gfx.Clear(treePictureBox.BackColor);
                     layout.DrawTree(null);
                 }
                 catch (Exception ex)
@@ -131,7 +135,7 @@ namespace RedBlackTreeVisualizer
                 layout.animationSteps.Dequeue();
                 timer2.Stop();
                 timer2.Enabled = false;
-
+                layout.animationSteps.Clear();
             }
         }
     }
